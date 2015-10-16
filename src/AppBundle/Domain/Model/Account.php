@@ -55,7 +55,7 @@ class Account extends EventSourcedAggregateRoot
         $account = new Account();
         $account->apply(new AccountCreatedEvent($id, $email));
         $account->apply(new AccountPasswordSetEvent($id, $encodedPassword));
-        $account->apply(new AccountSignedForBusinessEvent($id));
+        $account->apply(new AccountSignedForBusinessEvent($id, $email));
 
         return $account;
     }

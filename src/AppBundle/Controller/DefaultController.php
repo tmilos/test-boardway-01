@@ -52,4 +52,12 @@ class DefaultController extends Controller
     {
         return [];
     }
+
+    /**
+     * @Route("/verify/{id}", name="home.verify_business")
+     */
+    public function verifyBusinessAction($id)
+    {
+
+    }
 }

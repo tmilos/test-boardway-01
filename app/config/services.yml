@@ -8,6 +8,15 @@ services:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
 
+    app.mailer:
+        class: AppBundle\Infra\Mailer\TwigMailer
+        arguments:
+            - @mailer
+            - @twig
+            -
+                from_email: sender@domain.com
+                from_name: Sender
+
     domain.repository.account:
         class: AppBundle\Domain\Repository\AccountRepository
         arguments:
@@ -26,3 +35,11 @@ services:
             - @domain.repository.account
         tags:
             - { name: command_handler }
+
+    domain.listener.processor.send_verification_mail:
+        class: AppBundle\Domain\Listener\Processor\SendVerificationMailProcessor
+        arguments:
+            - @app.mailer
+            - @router
+        tags:
+            - { name: broadway.domain.event_listener }
