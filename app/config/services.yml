@@ -1,0 +1,28 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+#    service_name:
+#        class: AppBundle\Directory\ClassName
+#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+
+    domain.repository.account:
+        class: AppBundle\Domain\Repository\AccountRepository
+        arguments:
+            - @broadway.event_store
+            - @broadway.event_handling.event_bus
+
+    domain.repository.company:
+        class: AppBundle\Domain\Repository\CompanyRepository
+        arguments:
+            - @broadway.event_store
+            - @broadway.event_handling.event_bus
+
+    domain.command_handler.signup_for_business:
+        class: AppBundle\Domain\CommandHandler\SignupForBusinessCommandHandler
+        arguments:
+            - @domain.repository.account
+        tags:
+            - { name: command_handler }
