@@ -2,6 +2,8 @@
 
 namespace AppBundle\Domain\Model;
 
+use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
+
 class EncodedPassword extends AbstractValue
 {
     /** @var string */
@@ -16,6 +18,20 @@ class EncodedPassword extends AbstractValue
         parent::__construct($encodedPassword);
 
         $this->salt = $salt;
+    }
+
+    /**
+     * @param PasswordEncoderInterface $encoder
+     * @param string                  $plainPassword
+     *
+     * @return EncodedPassword
+     */
+    public static function encode(PasswordEncoderInterface $encoder, $plainPassword)
+    {
+        $salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
+        $encodedPassword = $encoder->encodePassword($plainPassword, $salt);
+
+        return new EncodedPassword($encodedPassword, $salt);
     }
 
     /**
