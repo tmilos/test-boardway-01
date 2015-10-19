@@ -35,7 +35,7 @@ class AccountSignedForBusinessEvent extends AbstractAccountEvent implements Seri
      */
     public static function deserialize(array $data)
     {
-        return new AccountSignedForBusinessEvent($data['account_id'], $data['email']);
+        return new AccountSignedForBusinessEvent(new AccountId($data['account_id']), new EmailAddress($data['email']));
     }
 
     /**

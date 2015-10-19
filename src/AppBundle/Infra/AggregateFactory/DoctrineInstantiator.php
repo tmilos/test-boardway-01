@@ -33,6 +33,8 @@ class DoctrineInstantiator implements AggregateFactoryInterface
         if ($aggregate instanceof EventSourcedAggregateRoot) {
             $aggregate->initializeState($domainEventStream);
         }
+
+        return $aggregate;
     }
 
 }

@@ -1,0 +1,8 @@
+services:
+    domain.listener.processor.send_verification_mail:
+        class: AppBundle\Domain\Listener\Processor\SendVerificationMailProcessor
+        arguments:
+            - @app.mailer
+            - @router
+        tags:
+            - { name: broadway.domain.event_listener }

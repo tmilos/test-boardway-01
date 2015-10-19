@@ -3,7 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Domain\Command\SignupForBusinessCommand;
+use AppBundle\Domain\Command\VerifyBusinessCommand;
 use AppBundle\Domain\Model\AccountId;
+use AppBundle\Domain\Model\CompanyId;
 use AppBundle\Domain\Model\EmailAddress;
 use AppBundle\Domain\Model\EncodedPassword;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -45,6 +47,31 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/login", name="home.login")
+     * @Template("default/login.html.twig")
+     */
+    public function loginAction()
+    {
+        $form = $this->createFormBuilder()
+            ->add('username', 'email')
+            ->add('password', 'password')
+            ->setAction($this->generateUrl('home.login_check'))
+            ->getForm();
+
+        return [
+            'form' => $form->createView(),
+        ];
+    }
+
+    /**
+     * @Route("/login_check", name="home.login_check")
+     */
+    public function loginCheckAction()
+    {
+
+    }
+
+    /**
      * @Route("/verification-mail-sent", name="home.verification_mail_sent")
      * @Template("default/verification_mail_sent.html.twig")
      */
@@ -58,6 +85,11 @@ class DefaultController extends Controller
      */
     public function verifyBusinessAction($id)
     {
+        $this->get('broadway.command_handling.command_bus')->dispatch(new VerifyBusinessCommand(
+            new AccountId($id),
+            $companyId = new CompanyId($this->get('broadway.uuid.generator')->generate())
+        ));
 
+        return $this->redirectToRoute('admin.index', ['companyId'=>$companyId->getValue()]);
     }
 }

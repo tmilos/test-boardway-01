@@ -1,0 +1,7 @@
+services:
+    read_model.projector.account:
+        class: AppBundle\Read\Projector\AccountProjector
+        arguments:
+            - "@=service('broadway.read_model.repository_factory').create('account', 'AppBundle\Read\Model\Account')"
+        tags:
+            - { name: broadway.domain.event_listener }

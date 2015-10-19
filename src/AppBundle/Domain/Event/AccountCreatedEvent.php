@@ -44,7 +44,7 @@ class AccountCreatedEvent extends AbstractAccountEvent implements SerializableIn
     {
         return [
             'account_id' => $this->getId()->getValue(),
-            'email' => $this->getEmail(),
+            'email' => $this->getEmail()->getValue(),
         ];
     }
 }

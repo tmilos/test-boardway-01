@@ -28,12 +28,13 @@ class SendVerificationMailProcessor extends Processor
     public function handleAccountSignedForBusinessEvent(AccountSignedForBusinessEvent $event)
     {
         $this->mailer->sendTwigMessage(
-            'verification_mail.html.twig',
+            'mail/verification_mail.html.twig',
             [
                 'url'=>$this->router->generate(
                     'home.verify_business',
-                    ['id'=>$event->getId()->getValue()]
-                )
+                    ['id'=>$event->getId()->getValue()],
+                    Router::ABSOLUTE_URL
+                ),
             ],
             $event->getEmail()->getValue(),
             $event->getEmail()->getValue()

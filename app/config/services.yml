@@ -17,29 +17,3 @@ services:
                 from_email: sender@domain.com
                 from_name: Sender
 
-    domain.repository.account:
-        class: AppBundle\Domain\Repository\AccountRepository
-        arguments:
-            - @broadway.event_store
-            - @broadway.event_handling.event_bus
-
-    domain.repository.company:
-        class: AppBundle\Domain\Repository\CompanyRepository
-        arguments:
-            - @broadway.event_store
-            - @broadway.event_handling.event_bus
-
-    domain.command_handler.signup_for_business:
-        class: AppBundle\Domain\CommandHandler\SignupForBusinessCommandHandler
-        arguments:
-            - @domain.repository.account
-        tags:
-            - { name: command_handler }
-
-    domain.listener.processor.send_verification_mail:
-        class: AppBundle\Domain\Listener\Processor\SendVerificationMailProcessor
-        arguments:
-            - @app.mailer
-            - @router
-        tags:
-            - { name: broadway.domain.event_listener }

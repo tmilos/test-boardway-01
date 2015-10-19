@@ -1,0 +1,12 @@
+services:
+    domain.repository.account:
+        class: AppBundle\Domain\Repository\AccountRepository
+        arguments:
+            - @broadway.event_store
+            - @broadway.event_handling.event_bus
+
+    domain.repository.company:
+        class: AppBundle\Domain\Repository\CompanyRepository
+        arguments:
+            - @broadway.event_store
+            - @broadway.event_handling.event_bus

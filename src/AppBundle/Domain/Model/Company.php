@@ -52,4 +52,12 @@ class Company extends EventSourcedAggregateRoot
         $this->ownerId = $event->getOwnerId();
         $this->domain = $event->getDomain();
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDomain()
+    {
+        return $this->domain;
+    }
 }

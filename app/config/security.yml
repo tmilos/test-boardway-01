@@ -20,6 +20,7 @@ security:
 
         main:
             anonymous: ~
+            form_login: true
             # activate different ways to authenticate
 
             # http_basic: ~

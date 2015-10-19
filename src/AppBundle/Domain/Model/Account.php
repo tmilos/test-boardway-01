@@ -98,6 +98,7 @@ class Account extends EventSourcedAggregateRoot
     protected function applyAccountBusinessVerifiedEvent(AccountBusinessVerifiedEvent $event)
     {
         $this->companyStatus = AccountCompanyStatus::active($this->id, $event->getCompanyId());
+        $this->companyStatus->registerAggregateRoot($this);
         $this->companyStatus->addCompanyRole(CompanyRole::owner());
     }
 }

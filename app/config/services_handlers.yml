@@ -1,0 +1,15 @@
+services:
+    domain.command_handler.signup_for_business:
+        class: AppBundle\Domain\CommandHandler\SignupForBusinessCommandHandler
+        arguments:
+            - @domain.repository.account
+        tags:
+            - { name: command_handler }
+
+    domain.command_handler.verify_business:
+        class: AppBundle\Domain\CommandHandler\VerifyBusinessCommandHandler
+        arguments:
+            - @domain.repository.account
+            - @domain.repository.company
+        tags:
+            - { name: command_handler }

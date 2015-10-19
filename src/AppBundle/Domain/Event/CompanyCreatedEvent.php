@@ -26,6 +26,10 @@ class CompanyCreatedEvent extends AbstractCompanyEvent implements SerializableIn
     public function __construct(CompanyId $id, AccountId $ownerId, $name, $domain)
     {
         parent::__construct($id);
+
+        $this->ownerId = $ownerId;
+        $this->name = $name;
+        $this->domain = $domain;
     }
 
     /**
