@@ -11,9 +11,14 @@ parameters:
     # database_path: "%kernel.root_dir%/data.db3"
 
     mailer_transport:  smtp
-    mailer_host:       127.0.0.1
+    mailer_host:       localhost
     mailer_user:       ~
     mailer_password:   ~
+    mailer_port:       ~
+    mailer_encryption: ~
+    mailer_auth_mode:  ~
+    mailer_from_email: ~
+    mailer_from_name:  ~
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
