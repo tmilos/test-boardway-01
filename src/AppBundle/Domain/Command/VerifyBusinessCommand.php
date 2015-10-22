@@ -2,29 +2,29 @@
 
 namespace AppBundle\Domain\Command;
 
-use AppBundle\Domain\Model\AccountId;
 use AppBundle\Domain\Model\CompanyId;
+use AppBundle\Domain\Model\EmailAddress;
 
 class VerifyBusinessCommand
 {
-    /** @var AccountId */
+    /** @var EmailAddress */
     private $accountId;
 
     /** @var CompanyId */
     private $companyId;
 
     /**
-     * @param AccountId $accountId
+     * @param EmailAddress $accountId
      * @param CompanyId $companyId
      */
-    public function __construct(AccountId $accountId, CompanyId $companyId)
+    public function __construct(EmailAddress $accountId, CompanyId $companyId)
     {
         $this->accountId = $accountId;
         $this->companyId = $companyId;
     }
 
     /**
-     * @return AccountId
+     * @return EmailAddress
      */
     public function getAccountId()
     {

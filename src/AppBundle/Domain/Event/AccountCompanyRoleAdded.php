@@ -2,8 +2,8 @@
 
 namespace AppBundle\Domain\Event;
 
-use AppBundle\Domain\Model\AccountId;
 use AppBundle\Domain\Model\CompanyRole;
+use AppBundle\Domain\Model\EmailAddress;
 use Broadway\Serializer\SerializableInterface;
 
 class AccountCompanyRoleAdded extends AbstractAccountEvent implements SerializableInterface
@@ -11,7 +11,11 @@ class AccountCompanyRoleAdded extends AbstractAccountEvent implements Serializab
     /** @var CompanyRole */
     private $companyRole;
 
-    public function __construct(AccountId $accountId, CompanyRole $companyRole)
+    /**
+     * @param EmailAddress $accountId
+     * @param CompanyRole  $companyRole
+     */
+    public function __construct(EmailAddress $accountId, CompanyRole $companyRole)
     {
         parent::__construct($accountId);
 
@@ -32,7 +36,7 @@ class AccountCompanyRoleAdded extends AbstractAccountEvent implements Serializab
     public static function deserialize(array $data)
     {
         return new AccountCompanyRoleAdded(
-            new AccountId($data['account_id']),
+            new EmailAddress($data['account_id']),
             new CompanyRole($data['company_role'])
         );
     }

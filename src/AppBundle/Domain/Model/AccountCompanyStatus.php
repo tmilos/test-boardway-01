@@ -11,7 +11,7 @@ class AccountCompanyStatus extends AbstractEnum
     const PENDING = 'pending';
     const ACTIVE = 'active';
 
-    /** @var AccountId */
+    /** @var EmailAddress */
     private $accountId;
 
     /** @var CompanyId|null */
@@ -21,10 +21,10 @@ class AccountCompanyStatus extends AbstractEnum
     private $companyRoles = [];
 
     /**
-     * @param AccountId $accountId
-     * @param string    $value
+     * @param EmailAddress $accountId
+     * @param string       $value
      */
-    public function __construct(AccountId $accountId, $value)
+    public function __construct(EmailAddress $accountId, $value)
     {
         parent::__construct($value);
 
@@ -46,11 +46,11 @@ class AccountCompanyStatus extends AbstractEnum
     }
 
     /**
-     * @param AccountId $accountId
+     * @param EmailAddress $accountId
      *
      * @return AccountCompanyStatus
      */
-    public static function none(AccountId $accountId)
+    public static function none(EmailAddress $accountId)
     {
         return new AccountCompanyStatus($accountId, self::NONE);
     }
@@ -58,18 +58,18 @@ class AccountCompanyStatus extends AbstractEnum
     /**
      * @return AccountCompanyStatus
      */
-    public static function pending(AccountId $accountId)
+    public static function pending(EmailAddress $accountId)
     {
         return new AccountCompanyStatus($accountId, self::PENDING);
     }
 
     /**
-     * @param AccountId $accountId
-     * @param CompanyId $companyId
+     * @param EmailAddress $accountId
+     * @param CompanyId    $companyId
      *
      * @return AccountCompanyStatus
      */
-    public static function active(AccountId $accountId, CompanyId $companyId)
+    public static function active(EmailAddress $accountId, CompanyId $companyId)
     {
         $status = new AccountCompanyStatus($accountId, self::ACTIVE);
         $status->companyId = $companyId;

@@ -22,7 +22,7 @@ class SignupForBusinessCommandHandler extends CommandHandler
 
     public function handleSignupForBusinessCommand(SignupForBusinessCommand $command)
     {
-        $account = Account::signupForBusiness($command->getAccountId(), $command->getEmailAddress(), $command->getEncodedPassword());
+        $account = Account::signupForBusiness($command->getEmailAddress(), $command->getEncodedPassword());
 
         $this->accountRepository->save($account);
     }

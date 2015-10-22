@@ -24,7 +24,7 @@ class AdminController extends Controller
         $company = $this->get('domain.repository.company')->load($companyId);
 
         return [
-            'companyDomain' => $company->getDomain(),
+            'companyDomain' => '???',
         ];
     }
 }

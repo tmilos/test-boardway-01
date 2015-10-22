@@ -8,34 +8,12 @@ use Broadway\Serializer\SerializableInterface;
 
 class AccountSignedForBusinessEvent extends AbstractAccountEvent implements SerializableInterface
 {
-    /** @var EmailAddress */
-    private $email;
-
-    /**
-     * @param AccountId    $accountId
-     * @param EmailAddress $email
-     */
-    public function __construct(AccountId $accountId, EmailAddress $email)
-    {
-        parent::__construct($accountId);
-
-        $this->email = $email;
-    }
-
-    /**
-     * @return EmailAddress
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
     /**
      * @return mixed The object instance
      */
     public static function deserialize(array $data)
     {
-        return new AccountSignedForBusinessEvent(new AccountId($data['account_id']), new EmailAddress($data['email']));
+        return static::_deserialize($data);
     }
 
     /**
@@ -43,9 +21,6 @@ class AccountSignedForBusinessEvent extends AbstractAccountEvent implements Seri
      */
     public function serialize()
     {
-        return [
-            'account_id' => $this->getId()->getValue(),
-            'email' => $this->email->getValue(),
-        ];
+        return static::_serialize();
     }
 }

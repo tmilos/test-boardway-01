@@ -2,8 +2,8 @@
 
 namespace AppBundle\Domain\Event;
 
-use AppBundle\Domain\Model\AccountId;
 use AppBundle\Domain\Model\CompanyId;
+use AppBundle\Domain\Model\EmailAddress;
 use Broadway\Serializer\SerializableInterface;
 
 class AccountBusinessVerifiedEvent extends AbstractAccountEvent implements SerializableInterface
@@ -12,10 +12,10 @@ class AccountBusinessVerifiedEvent extends AbstractAccountEvent implements Seria
     private $companyId;
 
     /**
-     * @param AccountId $accountId
-     * @param CompanyId $companyId
+     * @param EmailAddress $accountId
+     * @param CompanyId    $companyId
      */
-    public function __construct(AccountId $accountId, CompanyId $companyId)
+    public function __construct(EmailAddress $accountId, CompanyId $companyId)
     {
         parent::__construct($accountId);
 
@@ -36,7 +36,7 @@ class AccountBusinessVerifiedEvent extends AbstractAccountEvent implements Seria
     public static function deserialize(array $data)
     {
         return new AccountBusinessVerifiedEvent(
-            new AccountId($data['account_id']),
+            new EmailAddress($data['account_id']),
             new CompanyId($data['company_id'])
         );
     }

@@ -11,9 +11,6 @@ use Broadway\EventSourcing\EventSourcedAggregateRoot;
 
 class Account extends EventSourcedAggregateRoot
 {
-    /** @var AccountId */
-    private $id;
-
     /** @var EmailAddress */
     private $email;
 
@@ -35,7 +32,7 @@ class Account extends EventSourcedAggregateRoot
      */
     public function getAggregateRootId()
     {
-        return $this->id->getValue();
+        return $this->email->getValue();
     }
 
     protected function getChildEntities()
@@ -44,18 +41,17 @@ class Account extends EventSourcedAggregateRoot
     }
 
     /**
-     * @param AccountId       $id
-     * @param EmailAddress    $email
+     * @param EmailAddress    $id
      * @param EncodedPassword $encodedPassword
      *
      * @return Account
      */
-    public static function signupForBusiness(AccountId $id, EmailAddress $email, EncodedPassword $encodedPassword)
+    public static function signupForBusiness(EmailAddress $id, EncodedPassword $encodedPassword)
     {
         $account = new Account();
-        $account->apply(new AccountCreatedEvent($id, $email));
+        $account->apply(new AccountCreatedEvent($id));
         $account->apply(new AccountPasswordSetEvent($id, $encodedPassword));
-        $account->apply(new AccountSignedForBusinessEvent($id, $email));
+        $account->apply(new AccountSignedForBusinessEvent($id));
 
         return $account;
     }
@@ -71,18 +67,17 @@ class Account extends EventSourcedAggregateRoot
             throw new DomainOperationException('Account can be verified for business only in pending status');
         }
 
-        $company = Company::create($companyId, $this->id, $this->email->getDomain(), $this->email->getDomain());
+        $company = Company::create($companyId, $this->email, $this->email->getDomain(), $this->email->getDomain());
 
-        $this->apply(new AccountBusinessVerifiedEvent($this->id, $companyId));
+        $this->apply(new AccountBusinessVerifiedEvent($this->email, $companyId));
 
         return $company;
     }
 
     protected function applyAccountCreatedEvent(AccountCreatedEvent $event)
     {
-        $this->id = $event->getId();
-        $this->email = $event->getEmail();
-        $this->companyStatus = AccountCompanyStatus::none($this->id);
+        $this->email = $event->getId();
+        $this->companyStatus = AccountCompanyStatus::none($this->email);
     }
 
     protected function applyAccountPasswordSetEvent(AccountPasswordSetEvent $event)
@@ -92,12 +87,12 @@ class Account extends EventSourcedAggregateRoot
 
     protected function applyAccountSignedForBusinessEvent(AccountSignedForBusinessEvent $event)
     {
-        $this->companyStatus = AccountCompanyStatus::pending($this->id);
+        $this->companyStatus = AccountCompanyStatus::pending($this->email);
     }
 
     protected function applyAccountBusinessVerifiedEvent(AccountBusinessVerifiedEvent $event)
     {
-        $this->companyStatus = AccountCompanyStatus::active($this->id, $event->getCompanyId());
+        $this->companyStatus = AccountCompanyStatus::active($this->email, $event->getCompanyId());
         $this->companyStatus->registerAggregateRoot($this);
         $this->companyStatus->addCompanyRole(CompanyRole::owner());
     }

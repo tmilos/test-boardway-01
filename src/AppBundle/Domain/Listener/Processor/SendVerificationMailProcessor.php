@@ -36,8 +36,8 @@ class SendVerificationMailProcessor extends Processor
                     Router::ABSOLUTE_URL
                 ),
             ],
-            $event->getEmail()->getValue(),
-            $event->getEmail()->getValue()
+            $event->getId()->getValue(),
+            $event->getId()->getValue()
         );
     }
 }

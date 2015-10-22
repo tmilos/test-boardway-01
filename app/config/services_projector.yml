@@ -1,14 +1,7 @@
 services:
     read_model.projector.account:
-        class: AppBundle\Read\Projector\LoginProjector
+        class: AppBundle\Read\Projector\UserProjector
         arguments:
-            - "@=service('doctrine').getManager()"
-        tags:
-            - { name: broadway.domain.event_listener }
-
-    read_model.projector.company:
-        class: AppBundle\Read\Projector\CompanyProjector
-        arguments:
-            - "@=service('doctrine').getManager()"
+            - @read_model.repository.user
         tags:
             - { name: broadway.domain.event_listener }

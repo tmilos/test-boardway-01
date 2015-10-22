@@ -10,7 +10,7 @@ class Company extends EventSourcedAggregateRoot
     /** @var CompanyId */
     private $id;
 
-    /** @var AccountId */
+    /** @var EmailAddress */
     private $ownerId;
 
     private $domain;
@@ -31,14 +31,14 @@ class Company extends EventSourcedAggregateRoot
     }
 
     /**
-     * @param CompanyId $id
-     * @param AccountId $ownerId
-     * @param string    $name
-     * @param string    $domain
+     * @param CompanyId    $id
+     * @param EmailAddress $ownerId
+     * @param string       $name
+     * @param string       $domain
      *
      * @return Company
      */
-    public static function create(CompanyId $id, AccountId $ownerId, $name, $domain)
+    public static function create(CompanyId $id, EmailAddress $ownerId, $name, $domain)
     {
         $company = new Company();
         $company->apply(new CompanyCreatedEvent($id, $ownerId, $name, $domain));
@@ -51,13 +51,5 @@ class Company extends EventSourcedAggregateRoot
         $this->id = $event->getId();
         $this->ownerId = $event->getOwnerId();
         $this->domain = $event->getDomain();
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDomain()
-    {
-        return $this->domain;
     }
 }

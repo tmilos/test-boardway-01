@@ -2,13 +2,13 @@
 
 namespace AppBundle\Domain\Event;
 
-use AppBundle\Domain\Model\AccountId;
 use AppBundle\Domain\Model\CompanyId;
+use AppBundle\Domain\Model\EmailAddress;
 use Broadway\Serializer\SerializableInterface;
 
 class CompanyCreatedEvent extends AbstractCompanyEvent implements SerializableInterface
 {
-    /** @var AccountId */
+    /** @var EmailAddress */
     private $ownerId;
 
     /** @var string */
@@ -18,12 +18,12 @@ class CompanyCreatedEvent extends AbstractCompanyEvent implements SerializableIn
     private $domain;
 
     /**
-     * @param CompanyId $id
-     * @param AccountId $ownerId
-     * @param string    $name
-     * @param string    $domain
+     * @param CompanyId    $id
+     * @param EmailAddress $ownerId
+     * @param string       $name
+     * @param string       $domain
      */
-    public function __construct(CompanyId $id, AccountId $ownerId, $name, $domain)
+    public function __construct(CompanyId $id, EmailAddress $ownerId, $name, $domain)
     {
         parent::__construct($id);
 
@@ -33,7 +33,7 @@ class CompanyCreatedEvent extends AbstractCompanyEvent implements SerializableIn
     }
 
     /**
-     * @return AccountId
+     * @return EmailAddress
      */
     public function getOwnerId()
     {
@@ -63,7 +63,7 @@ class CompanyCreatedEvent extends AbstractCompanyEvent implements SerializableIn
     {
         return new CompanyCreatedEvent(
             new CompanyId($data['company_id']),
-            new AccountId($data['owner_id']),
+            new EmailAddress($data['owner_id']),
             $data['name'],
             $data['domain']
         );

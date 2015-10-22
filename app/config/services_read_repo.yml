@@ -1,0 +1,7 @@
+services:
+    read_model.repository.user:
+        class: Broadway\ReadModel\ElasticSearch\ElasticSearchRepository
+        factory: [@broadway.read_model.elasticsearch.repository_factory, create]
+        arguments:
+            - account
+            - 'AppBundle\Read\Model\User'

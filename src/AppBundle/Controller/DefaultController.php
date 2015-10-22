@@ -4,15 +4,14 @@ namespace AppBundle\Controller;
 
 use AppBundle\Domain\Command\SignupForBusinessCommand;
 use AppBundle\Domain\Command\VerifyBusinessCommand;
-use AppBundle\Domain\Model\AccountId;
 use AppBundle\Domain\Model\CompanyId;
 use AppBundle\Domain\Model\EmailAddress;
 use AppBundle\Domain\Model\EncodedPassword;
+use AppBundle\Security\User\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\User\User;
 
 class DefaultController extends Controller
 {
@@ -32,7 +31,6 @@ class DefaultController extends Controller
             $data = $form->getData();
             $this->get('broadway.command_handling.command_bus')->dispatch(
                 new SignupForBusinessCommand(
-                    new AccountId($this->get('broadway.uuid.generator')->generate()),
                     new EmailAddress($data['email']),
                     EncodedPassword::encode($this->get('security.encoder_factory')->getEncoder(User::class), $data['password'])
                 )
@@ -86,7 +84,7 @@ class DefaultController extends Controller
     public function verifyBusinessAction($id)
     {
         $this->get('broadway.command_handling.command_bus')->dispatch(new VerifyBusinessCommand(
-            new AccountId($id),
+            new EmailAddress($id),
             $companyId = new CompanyId($this->get('broadway.uuid.generator')->generate())
         ));
 

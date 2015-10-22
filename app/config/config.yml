@@ -5,6 +5,7 @@ imports:
     - { resource: services_repository.yml }
     - { resource: services_handlers.yml }
     - { resource: services_listeners.yml }
+    - { resource: services_read_repo.yml}
     - { resource: services_projector.yml}
 
 # Put parameters here that don't need to change on each machine where the app is deployed
@@ -90,8 +91,4 @@ swiftmailer:
         type: file
         path: %kernel.root_dir%/../var/email
 
-broadway:
-    saga:
-        repository: in_memory
-    read_model:
-        repository: in_memory
+broadway: true
