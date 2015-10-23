@@ -4,7 +4,6 @@ namespace AppBundle\Read\Model;
 
 use Broadway\ReadModel\ReadModelInterface;
 use Broadway\Serializer\SerializableInterface;
-use Symfony\Component\Security\Core\Role\Role;
 
 class User implements  ReadModelInterface, SerializableInterface
 {
@@ -148,7 +147,7 @@ class User implements  ReadModelInterface, SerializableInterface
         $object->password = $data['password'];
         $object->salt = $data['salt'];
         $object->roles = $data['roles'];
-        $object->isActive = $data['is_active'];
+        $object->isActive = $data['isActive'];
 
         return $object;
     }
@@ -163,7 +162,7 @@ class User implements  ReadModelInterface, SerializableInterface
             'password' => $this->password,
             'salt' => $this->salt,
             'roles' => $this->roles,
-            'is_active' => $this->isActive,
+            'isActive' => $this->isActive,
         ];
     }
 }

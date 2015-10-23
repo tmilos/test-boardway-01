@@ -22,3 +22,27 @@ services:
         class: AppBundle\Security\User\UserProvider
         arguments:
             - @read_model.repository.user
+
+    app.event_player:
+        class: AppBundle\Infra\EventPlayer\DBALEventPlayer
+        arguments:
+            - @broadway.event_store.dbal.connection
+            - @broadway.serializer.payload
+            - @broadway.serializer.metadata
+            - %broadway.event_store.dbal.table%
+            - %broadway.event_store.dbal.use_binary%
+
+    app.cmd.readmodel_rebuild:
+        class: AppBundle\Command\ReadModelReplyEventsCommand
+        arguments:
+            - @app.event_player
+        tags:
+            - { name: console.command }
+
+    read_model.index_generator:
+        class: AppBundle\Infra\ReadModel\ElasticSearchIndexGenerator
+        arguments:
+            -
+                - @read_model.repository.user
+                - @read_model.repository.employee
+                - @read_model.repository.company

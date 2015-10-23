@@ -1,7 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-    <h1>Admin</h1>
+    <h1>{{ company.name }}</h1>
 
-    {{ companyDomain }}
+    <h2>Employees</h2>
+    <ul>
+        {% for employee in employees %}
+        <li>{{ employee.accountId }}</li>
+        {% endfor %}
+    </ul>
 {% endblock %}

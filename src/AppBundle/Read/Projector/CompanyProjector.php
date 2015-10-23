@@ -3,40 +3,31 @@
 namespace AppBundle\Read\Projector;
 
 use AppBundle\Domain\Event\CompanyCreatedEvent;
-use AppBundle\Entity\Company;
+use AppBundle\Read\Model\Company;
 use Broadway\ReadModel\Projector;
-use Doctrine\Common\Persistence\ObjectManager;
+use Broadway\ReadModel\RepositoryInterface;
 
 class CompanyProjector extends Projector
 {
-    /** @var ObjectManager */
-    private $manager;
+    /** @var RepositoryInterface */
+    private $repository;
 
     /**
-     * @param ObjectManager $manager
+     * @param RepositoryInterface $repository
      */
-    public function __construct(ObjectManager $manager)
+    public function __construct(RepositoryInterface $repository)
     {
-        $this->manager = $manager;
+        $this->repository = $repository;
     }
 
-    /**
-     * @param CompanyCreatedEvent $event
-     */
     public function applyCompanyCreatedEvent(CompanyCreatedEvent $event)
     {
-        $company = $this->manager->find(Company::class, $event->getId()->getValue());
+        $company = $this->repository->find($event->getId()->getValue());
         if (null == $company) {
-            $company = new Company();
+            $company = new Company($event->getId()->getValue(), $event->getName(), $event->getDomain());
         }
-
-        $company
-            ->setId($event->getId()->getValue())
-            ->setName($event->getName())
-            ->setDomain($event->getDomain())
-        ;
-
-        $this->manager->persist($company);
-        $this->manager->flush($company);
+        $company->setName($event->getName());
+        $company->setDomain($event->getDomain());
+        $this->repository->save($company);
     }
 }

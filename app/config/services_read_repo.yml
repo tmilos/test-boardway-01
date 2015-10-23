@@ -3,5 +3,29 @@ services:
         class: Broadway\ReadModel\ElasticSearch\ElasticSearchRepository
         factory: [@broadway.read_model.elasticsearch.repository_factory, create]
         arguments:
-            - account
+            - user
             - 'AppBundle\Read\Model\User'
+            -
+                - email
+                - isActive
+
+    read_model.repository.employee:
+        class: Broadway\ReadModel\ElasticSearch\ElasticSearchRepository
+        factory: [@broadway.read_model.elasticsearch.repository_factory, create]
+        arguments:
+            - employee
+            - 'AppBundle\Read\Model\Employee'
+            -
+                - accountId
+                - companyId
+
+    read_model.repository.company:
+        class: Broadway\ReadModel\ElasticSearch\ElasticSearchRepository
+        factory: [@broadway.read_model.elasticsearch.repository_factory, create]
+        arguments:
+            - company
+            - 'AppBundle\Read\Model\Company'
+            -
+                - id
+                - name
+                - domain

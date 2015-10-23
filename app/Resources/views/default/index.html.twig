@@ -3,6 +3,10 @@
 {% block content %}
     <h1>Welcome</h1>
 
+    <div class="clearfix">
+        <a href="{{ path('home.login') }}" class="btn btn-primary btn-lg pull-right">Login</a>
+    </div>
+
     <h2>Signup</h2>
     {{ form_start(form) }}
     {{ form_widget(form) }}

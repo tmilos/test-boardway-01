@@ -7,11 +7,15 @@ use AppBundle\Domain\Command\VerifyBusinessCommand;
 use AppBundle\Domain\Model\CompanyId;
 use AppBundle\Domain\Model\EmailAddress;
 use AppBundle\Domain\Model\EncodedPassword;
+use AppBundle\Read\Model\Employee;
 use AppBundle\Security\User\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class DefaultController extends Controller
 {
@@ -21,6 +25,10 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('admin.selectCompany');
+        }
+
         $form = $this->createFormBuilder()
             ->add('email', 'email')
             ->add('password', 'password')
@@ -89,5 +97,20 @@ class DefaultController extends Controller
         ));
 
         return $this->redirectToRoute('admin.index', ['companyId'=>$companyId->getValue()]);
+    }
+
+    /**
+     * @Route("/admin", name="admin.selectCompany")
+     */
+    public function adminSelectCompany()
+    {
+        $email = $this->getUser()->getUsername();
+        /** @var Employee $employee */
+        $employee = $this->get('read_model.repository.employee')->find($email);
+        if (null == $employee) {
+            throw new AccessDeniedHttpException();
+        }
+
+        return $this->redirectToRoute('admin.index', ['companyId'=>$employee->getCompanyId()]);
     }
 }
