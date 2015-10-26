@@ -2,7 +2,9 @@
 
 namespace AppBundle\Read\Projector;
 
+use AppBundle\Domain\Event\EmployeeRolesSetEvent;
 use AppBundle\Domain\Event\CompanyCreatedEvent;
+use AppBundle\Domain\Model\CompanyRole;
 use AppBundle\Read\Model\Employee;
 use Broadway\ReadModel\Projector;
 use Broadway\ReadModel\RepositoryInterface;
@@ -20,17 +22,20 @@ class EmployeeProjector extends Projector
         $this->employeeRepository = $repository;
     }
 
-    /**
-     * @param CompanyCreatedEvent $event
-     */
-    public function applyCompanyCreatedEvent(CompanyCreatedEvent $event)
+    public function applyEmployeeRolesSetEvent(EmployeeRolesSetEvent $event)
     {
         /** @var Employee $employee */
-        $employee = $this->employeeRepository->find($event->getOwnerId()->getValue());
+        $employee = $this->employeeRepository->find($event->getId()->getValue());
         if (null == $employee) {
-            $employee = new Employee($event->getOwnerId()->getValue(), $event->getId()->getValue());
+            $employee = new Employee(
+                $event->getId()->getValue(),
+                $event->getCompanyId()->getValue(),
+                $event->getCompanyRoles()
+            );
         } else {
-            $employee->setCompanyId($event->getId()->getValue());
+            $employee
+                ->setCompanyRoles($event->getCompanyRoles())
+                ->setCompanyId($event->getId()->getValue());
         }
         $this->employeeRepository->save($employee);
     }

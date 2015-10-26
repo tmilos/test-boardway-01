@@ -3,7 +3,7 @@
 namespace AppBundle\Domain\Model;
 
 use AppBundle\Domain\Error\DomainOperationException;
-use AppBundle\Domain\Event\AccountCompanyRoleAdded;
+use AppBundle\Domain\Event\EmployeeRolesSetEvent;
 
 class AccountCompanyStatus extends AbstractEnum
 {
@@ -98,7 +98,7 @@ class AccountCompanyStatus extends AbstractEnum
 
         if (false === isset($this->companyRoles[$role->getValue()])) {
             $this->companyRoles[$role->getValue()] = $role;
-            $this->apply(new AccountCompanyRoleAdded($this->accountId, $role));
+            $this->apply(new EmployeeRolesSetEvent($this->accountId, $this->companyId, array_values($this->companyRoles)));
         }
 
         return $this;

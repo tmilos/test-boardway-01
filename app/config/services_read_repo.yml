@@ -18,6 +18,7 @@ services:
             -
                 - accountId
                 - companyId
+                - companyRoles
 
     read_model.repository.company:
         class: Broadway\ReadModel\ElasticSearch\ElasticSearchRepository
